@@ -1,0 +1,5 @@
+/dist/
+/src/upgrade/
+/bg-tpl-ts.json
+/ms-tpl-ts.json
+/node_modules
