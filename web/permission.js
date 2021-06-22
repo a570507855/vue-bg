@@ -1,8 +1,3 @@
-import Vue from 'vue'
-import {
-  Message
-} from 'element-ui'
-
 import router from './router'
 import getPageTitle from '@/script/lib/get-page-title'
 

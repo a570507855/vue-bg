@@ -4,7 +4,6 @@ import Vue from 'vue'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
-import get from '@/script/lib/get-sdk'
 import post from '@/script/lib/post-sdk'
 import loading from '@/script/uc/loading'
 import toast from '@/script/uc/toast'
@@ -25,7 +24,6 @@ Vue.use(ElementUI, {
 
 Vue.config.productionTip = false;
 Vue.prototype.$eventBus = new Vue();
-Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 Vue.prototype.$toast = toast;
 new Vue({

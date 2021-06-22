@@ -3,10 +3,6 @@ import {
   MessageBox,
   Message
 } from 'element-ui'
-import {
-  getToken,
-  removeToken
-} from '@/script/lib/token'
 import defaultSettings from '@/settings'
 import router from '@/router'
 
@@ -34,24 +30,6 @@ ajax.interceptors.response.use(
           type: 'error',
           duration: 5 * 1000
         });
-
-        if (res.status === 301) {
-          try {
-            await MessageBox.confirm('账号认证失效，是否重新登录？', '认证失效', {
-              confirmButtonText: '重新登录',
-              cancelButtonText: '取消',
-              type: 'warning'
-            });
-            removeToken();
-            router.push({
-              path: '/login'
-            });
-          } catch (err) {
-            if (err !== 'cancel') throw err;
-          } finally {
-            return [];
-          }
-        }
         return Promise.reject(new Error(res.errmsg || 'Error'));
       } else {
         return res.data;
@@ -168,24 +146,6 @@ post.interceptors.response.use(
           type: 'error',
           duration: 5 * 1000
         });
-
-        if (res.status === 301) {
-          try {
-            await MessageBox.confirm('账号认证失效，是否重新登录？', '认证失效', {
-              confirmButtonText: '重新登录',
-              cancelButtonText: '取消',
-              type: 'warning'
-            });
-            removeToken();
-            router.push({
-              path: '/login'
-            });
-          } catch (err) {
-            if (err !== 'cancel') throw err;
-          } finally {
-            return [];
-          }
-        }
         return Promise.reject(new Error(res.errmsg || 'Error'));
       } else {
         return res.data;

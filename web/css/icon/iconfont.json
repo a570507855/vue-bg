@@ -1,16 +1,72 @@
 {
-  "id": "2602446",
-  "name": "tusword_bg",
+  "id": "2626485",
+  "name": "web_icon",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "1595353",
-      "name": "点赞",
-      "font_class": "dianzan",
+      "icon_id": "12600931",
+      "name": "ts",
+      "font_class": "ts",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "9243440",
+      "name": "文件",
+      "font_class": "wenjian",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "19035878",
+      "name": "html",
+      "font_class": "html",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "6294486",
+      "name": "TXT",
+      "font_class": "txt",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    },
+    {
+      "icon_id": "8988966",
+      "name": "文件夹",
+      "font_class": "dir",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "19035877",
+      "name": "css",
+      "font_class": "css",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "19035880",
+      "name": "js",
+      "font_class": "js",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "19035884",
+      "name": "JSON",
+      "font_class": "json",
       "unicode": "e61a",
       "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "19035892",
+      "name": "vue",
+      "font_class": "vue",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
     }
   ]
 }

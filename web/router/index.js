@@ -1,15 +1,62 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import layout from '@/components/layout'
+import config from '@/settings'
 
 Vue.use(Router);
-let path = 'main/index'; //important!!! 
+
+const menu = config.menu;
+let routes = menu.reduce((memo, item) => {
+  if (!item.children.length) {
+    memo.push({
+      path: item.route,
+      component: layout,
+      children: [{
+        path: item.route,
+        name: item.route,
+        component: resolve => require([`@/views${item.route}`], resolve),
+        meta: {
+          title: item.name,
+        }
+      }]
+    })
+  } else {
+    memo.push(...item.children.reduce((cmemo, citem) => {
+      cmemo.push({
+        path: citem.route,
+        component: layout,
+        children: [{
+          path: citem.route,
+          name: citem.route,
+          component: resolve => require([`@/views${citem.route}`], resolve),
+          meta: {
+            title: citem.name,
+          }
+        }]
+      });
+      return cmemo;
+    }, []));
+  }
+  return memo;
+}, []);
 
 export const constantRoutes = [{
+    path: '/',
+    component: layout,
+    redirect: '/main/1',
+    hidden: true
+  },
+  {
     path: '/main/index',
-    component: process.env.NODE_ENV === 'development' ? () => import('@/views/main/index') : () => import(
-      /*webpackMode:'eager' */
-      /* webpackChunkName: "base" */
-      `@/views/${path}`),
+    component: layout,
+    children: [{
+      path: '/main/index',
+      name: 'main/index',
+      component: () => import('@/views/main/index'),
+      meta: {
+        title: '后台',
+      }
+    }],
     hidden: true
   },
   {
@@ -17,11 +64,7 @@ export const constantRoutes = [{
     component: () => import('@/views/404'),
     hidden: true
   },
-  {
-    path: '/',
-    redirect: '/main/index',
-    hidden: true
-  },
+  ...routes
 ]
 const createRouter = () => new Router({
   scrollBehavior: () => ({

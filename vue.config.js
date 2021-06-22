@@ -12,7 +12,7 @@ function resolve(dir) {
 const name = defaultSettings.title || '后台管理'
 module.exports = {
   publicPath: './',
-  outputDir: './static',
+  outputDir: '../nodeAPI/web',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   filenameHashing: true,
