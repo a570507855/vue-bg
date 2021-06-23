@@ -1,13 +1,15 @@
 <template>
-  <div class="app-container">
+  <div class="app-container directory">
     <div>
-      <el-button @click="onPreDir">返回上一级</el-button>
+      <span>路径：{{ currentPath[0] ? currentPath[0].dir : '' }}</span>
+      <el-button type="text" size="small" style="margin-left: 15px" @click="onPreDir">返回上一级</el-button>
+      <input type="file" name="" id="" webkitdirectory @change="onSelectDir" />
     </div>
     <div style="display: flex; justify-content: space-between">
       <div>
         <div v-for="(item, index) in currentPath" :key="index" class="dir-item" @click="onClickPath(index, item)">
           <i v-if="item.isDir" class="iconfont icon-dir"></i>
-          <i v-else class="iconfont" :class="iconMap[item.ext]"></i>
+          <i v-else class="iconfont" :class="iconMap[item.ext] || 'icon-wenjian'"></i>
           <span style="margin-left: 10px">{{ `${item.name}${item.ext}` }}</span>
         </div>
       </div>
@@ -15,16 +17,18 @@
         <pre>{{ fileContent }}</pre>
       </div>
     </div>
+    <file-detail :path="filePath" :show="fileShow"></file-detail>
   </div>
 </template>
 
 <script>
+import fileDetail from './file-directory-detail.vue';
+
 export default {
   data() {
     return {
       paths: [],
       iconMap: {
-        '': 'icon-wenjian',
         '.json': 'icon-json',
         '.txt': 'icon-txt',
         '.css': 'icon-css',
@@ -35,43 +39,65 @@ export default {
       },
       treeIndex: [],
       fileContent: '',
+      filePath: '',
+      fileShow: false,
     };
   },
   methods: {
     async onClickPath(index, path) {
-      if (!path.isDir) {
-        this.fileContent = await this.$post('/directory/readFile', {
-          path: `${path.dir}/${path.base}`,
-        });
-        return;
+      if (path.isDir) {
+        return this.treeIndex.splice(this.treeIndex.length, 0, index);
       }
-      this.treeIndex.splice(this.treeIndex.length, 0, index);
+      this.filePath = `${path.dir}\\${path.base}`;
+      this.fileShow = true;
     },
     onPreDir() {
       if (!this.treeIndex.length) return;
       this.treeIndex.splice(this.treeIndex.length - 1, 1);
+    },
+    async onSelectDir(e) {
+      const files = Array.from(e.target.files).filter((r) => !r.webkitRelativePath.includes('node_modules') && !r.webkitRelativePath.includes('.git'));
+      const formData = new FormData();
+      let dirMap = {};
+      files.forEach((item) => {
+        let r = item.webkitRelativePath.replace('/', '\\').split('\\');
+        r.splice(0, 1);
+        dirMap[item.name] = r.join('\\');
+        formData.append('files', item);
+      });
+      try {
+        this.$ucLoading.show();
+        await this.$post('/directory/update', formData, { dirMap: JSON.stringify(dirMap) });
+      } catch (err) {
+        throw err;
+      } finally {
+        this.$ucLoading.hide();
+      }
     },
   },
   computed: {
     currentPath() {
       if (!this.treeIndex.length) return this.paths;
       let path = JSON.parse(JSON.stringify(this.paths));
-      let res = this.treeIndex.map((memo, item) => {
-        path = path[item];
-        memo = path[item];
-        return memo;
-      }, []);
-      console.log(res);
+      this.treeIndex.forEach((item) => {
+        path = path[item].children;
+      });
+      return path;
     },
   },
   async mounted() {
     this.paths = await this.$post('/directory/get');
-    console.log(this.paths);
+  },
+  components: {
+    fileDetail,
   },
 };
 </script>
 
 <style scoped>
+.directory {
+  position: relative;
+}
 .dir-item {
   height: 30px;
   line-height: 30px;

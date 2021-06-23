@@ -43,7 +43,7 @@ let routes = menu.reduce((memo, item) => {
 export const constantRoutes = [{
     path: '/',
     component: layout,
-    redirect: '/main/1',
+    redirect: '/main/index',
     hidden: true
   },
   {

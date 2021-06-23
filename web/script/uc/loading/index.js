@@ -5,6 +5,6 @@ obj.install = function (Vue) {
   const loading = new loadingContrustor();
   loading.$mount(document.createElement("div"));
   document.body.appendChild(loading.$el);
-  Vue.prototype.$cloading = loading;
+  Vue.prototype.$ucLoading = loading;
 }
 export default obj;

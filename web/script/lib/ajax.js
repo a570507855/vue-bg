@@ -45,7 +45,7 @@ ajax.interceptors.response.use(
     }
 );
 
-export const post = axios.create({
+export const upload = axios.create({
   timeout: 10000,
   baseURL: defaultSettings[process.env.NODE_ENV].baseURL,
   headers: {
@@ -109,7 +109,7 @@ function objToFormData(obj) {
 }
 
 //Upload请求拦截器
-post.interceptors.request.use(
+upload.interceptors.request.use(
   config => {
     if (config.data && config.data.constructor !== FormData) {
       let formData = new FormData();
@@ -137,7 +137,7 @@ post.interceptors.request.use(
 );
 
 //响应拦截器
-post.interceptors.response.use(
+upload.interceptors.response.use(
   async (response) => {
       const res = response.data;
       if (res.status !== 0) {
@@ -160,13 +160,5 @@ post.interceptors.response.use(
       return Promise.reject(error);
     }
 );
-
-export const ajaxPost = async (url, data) => {
-  return ajax({
-    url,
-    method: 'post',
-    data
-  });
-};
 
 export default ajax

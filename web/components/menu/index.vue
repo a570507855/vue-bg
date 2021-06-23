@@ -20,6 +20,7 @@
 
 <script>
 import config from '@/settings';
+import { setCurrentMenuRoute, getCurrentMenuRoute, setCurrentMenuIndex, getCurrentMenuIndex } from '@/script/lib/sessionStorage';
 
 export default {
   data() {
@@ -30,16 +31,16 @@ export default {
   },
   methods: {
     onJump(menu) {
-      sessionStorage.setItem('currentMenuIndex', menu.index);
-      sessionStorage.setItem('currentMenuRoute', menu.route);
+      setCurrentMenuRoute(menu.route);
+      setCurrentMenuIndex(menu.index);
       this.$router.push({ path: menu.route });
     },
   },
   async mounted() {
     this.menu = config.menu;
     await this.$nextTick();
-    this.defaultActive = sessionStorage.getItem('currentMenuIndex') || '1-1';
-    let route = sessionStorage.getItem('currentMenuRoute') || '/main/index';
+    this.defaultActive = getCurrentMenuIndex() || '1-1';
+    let route = getCurrentMenuRoute() || '/main/index';
     this.$router.push({ path: route });
   },
 };

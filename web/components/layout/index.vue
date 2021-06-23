@@ -4,7 +4,9 @@
       <router-menu></router-menu>
     </div>
     <div class="app-main">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>

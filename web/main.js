@@ -5,6 +5,7 @@ import Vue from 'vue'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import post from '@/script/lib/post-sdk'
+import upload from '@/script/lib/upload'
 import loading from '@/script/uc/loading'
 import toast from '@/script/uc/toast'
 
@@ -25,6 +26,7 @@ Vue.use(ElementUI, {
 Vue.config.productionTip = false;
 Vue.prototype.$eventBus = new Vue();
 Vue.prototype.$post = post;
+Vue.prototype.$upload = upload;
 Vue.prototype.$toast = toast;
 new Vue({
   el: '#app',

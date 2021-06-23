@@ -1,9 +1,10 @@
 import ajax from './ajax';
-export default async (route, data, uploadProgress = null) => {
+export default async (route, data, params, uploadProgress = null) => {
     return ajax({
         method: 'post',
         url: route,
         data: data,
-        onUploadProgress:uploadProgress
+        params,
+        onUploadProgress: uploadProgress
     })
 };
