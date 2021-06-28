@@ -3,7 +3,8 @@
     <div>
       <span>路径：{{ currentPath[0] ? currentPath[0].dir : '' }}</span>
       <el-button type="text" size="small" style="margin-left: 15px" @click="onPreDir">返回上一级</el-button>
-      <input type="file" name="" id="" webkitdirectory @change="onSelectDir" />
+      <el-button type="text" size="small" style="margin-left: 15px" @click="onUpdate">更新</el-button>
+      <input type="file" webkitdirectory @change="onSelectDir" ref="fileUpload" style="display: none" />
     </div>
     <div style="display: flex; justify-content: space-between">
       <div>
@@ -51,6 +52,9 @@ export default {
       this.filePath = `${path.dir}\\${path.base}`;
       this.fileShow = true;
     },
+    onUpdate() {
+      this.$refs['fileUpload'].click();
+    },
     onPreDir() {
       if (!this.treeIndex.length) return;
       this.treeIndex.splice(this.treeIndex.length - 1, 1);
@@ -58,21 +62,27 @@ export default {
     async onSelectDir(e) {
       const files = Array.from(e.target.files).filter((r) => !r.webkitRelativePath.includes('node_modules') && !r.webkitRelativePath.includes('.git'));
       const formData = new FormData();
-      let dirMap = {};
+      let dirs = [];
       files.forEach((item) => {
         let r = item.webkitRelativePath.replace('/', '\\').split('\\');
         r.splice(0, 1);
-        dirMap[item.name] = r.join('\\');
+        dirs.push(r.join('\\'));
         formData.append('files', item);
       });
       try {
         this.$ucLoading.show();
-        await this.$post('/directory/update', formData, { dirMap: JSON.stringify(dirMap) });
+        await this.$post('/directory/update', formData, { dirs: JSON.stringify(dirs) });
+        this.onSearch();
+        this.$message.success('更新成功！！！');
       } catch (err) {
         throw err;
       } finally {
         this.$ucLoading.hide();
+        this.$refs['fileUpload'].value = '';
       }
+    },
+    async onSearch() {
+      this.paths = await this.$post('/directory/get');
     },
   },
   computed: {
@@ -86,7 +96,7 @@ export default {
     },
   },
   async mounted() {
-    this.paths = await this.$post('/directory/get');
+    this.onSearch();
   },
   components: {
     fileDetail,
