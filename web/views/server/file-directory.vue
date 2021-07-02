@@ -82,7 +82,14 @@ export default {
       }
     },
     async onSearch() {
-      this.paths = await this.$post('/directory/get');
+      try {
+        this.$ucLoading.show();
+        this.paths = await this.$post('/directory/get');
+      } catch (err) {
+        throw err;
+      } finally {
+        this.$ucLoading.hide();
+      }
     },
   },
   computed: {

@@ -26,12 +26,12 @@ module.exports = {
       index: '1-3',
     }]
   }, {
-    name: '菜单二',
+    name: 'typescript',
     route: '',
     index: '2',
     children: [{
-      name: '菜单二1',
-      route: '/test/4',
+      name: '基础类型',
+      route: '/typescript/data-type',
       index: '2-1',
     }, {
       name: '菜单二2',
@@ -42,10 +42,5 @@ module.exports = {
       route: '/test/6',
       index: '2-3',
     }]
-  }, {
-    name: '菜单三',
-    route: '/test/7',
-    index: '3',
-    children: []
   }]
 }

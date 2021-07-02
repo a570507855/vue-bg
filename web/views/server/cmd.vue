@@ -22,11 +22,14 @@ export default {
   methods: {
     async onCmd() {
       try {
+        this.$ucLoading.show();
         this.res = await this.$post('/sys/cmd', {
           command: this.command,
         });
       } catch (err) {
         throw err;
+      } finally {
+        this.$ucLoading.hide();
       }
     },
   },
